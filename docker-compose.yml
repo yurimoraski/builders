@@ -1,0 +1,39 @@
+version: '3.4'
+services:
+    api:
+        container_name: buiders-api
+        build:
+            context: .
+        ports:
+            - "9017:9017"
+        networks:
+            - bridge
+        env_file:
+            - .env
+        depends_on:
+            - buiders-mongo
+    mongo:
+        container_name: buiders-mongo
+        image: 'mongo:3.4'
+        command: mongod --maxConns 10000
+        volumes:
+            - 'buiders_mongo:/data/db'
+        ports:
+            - '27057:27057'
+        networks:
+            - bridge
+
+    redis:
+        container_name: buiders-redis
+        image: redis
+        ports:
+            - 6379:6379
+        networks:
+            - bridge
+volumes:
+    buiders_mongo:
+        driver: local
+
+networks:
+    bridge:
+        driver: bridge
