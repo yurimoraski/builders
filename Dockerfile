@@ -12,9 +12,8 @@ RUN gradle build --no-daemon --info
 
 FROM openjdk:11-jre-slim
 
-COPY --from=build /home/gradle/src/build/libs/builders.jar /app.jar
+COPY --from=build /home/gradle/src/build/libs/mvp.jar /app.jar
 
 COPY docker-entrypoint.sh /
-RUN apk add --no-cache curl && \
-    chmod +x /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
